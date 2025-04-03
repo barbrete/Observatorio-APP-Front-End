@@ -5,6 +5,7 @@ import {TextInput, StyleSheet, Text, Touchable, TouchableOpacity, View, Image, P
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
 export default function signIn() {
   const router = useRouter();
@@ -14,10 +15,12 @@ export default function signIn() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://seu-servidor.com/api/auth/login', { email, password: senha }, {
+      const dadosCadastro = { email, senha };
+
+      const response = await axios.post('http://localhost:5000/api/login',  dadosCadastro , {
         headers: {
           'Content-Type': 'application/json',
-        },
+        }, 
       });
 
       if (response.data.success) {
@@ -29,7 +32,13 @@ export default function signIn() {
       }
     } catch (error) {
       alert("Erro ao fazer login: " + error.response?.data?.message || error.message);
+      if (!error.response) {
+        alert("Erro de conexão: Verifique se o servidor está acessível.");
+      } else {
+        alert("Erro ao fazer login: " + error.response.data.message);
+      }
     }
+    
   };
 
   return (
@@ -103,7 +112,7 @@ export default function signIn() {
         }}>
 
           <Text>Não tem uma conta?</Text>
-          <Pressable onPress={() => router.push('/autenticacao/signUp')}>
+          <Pressable onPress={() => router.push('/autenticacao/SignUpSimplificado')}>
             <Text style={{
               color: 'green',
             }}>Criar Conta</Text>

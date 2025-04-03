@@ -25,7 +25,7 @@ export default function signUp() {
       const dadosCadastro = { nome, email, numeroCelular, cpf, curriculoLattes, dataNascimento, senha };
 
       //substitua a URL e método conforme sua API
-      const response = await axios.post('https://seu-servidor.com/api/cadastro', dadosCadastro, {
+      const response = await axios.post('http://localhost:5000/api/register', dadosCadastro, {
         headers: {
           'Content-Type': 'application/json',
         },
